@@ -1,0 +1,13 @@
+{
+  "name": "recipes",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "lint:boundaries": "depcruise packages"
+  },
+  "devDependencies": {
+    "bun-types": "^1.4.0",
+    "dependency-cruiser": "^18.2.0",
+    "typescript": "^6"
+  }
+}
