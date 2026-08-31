@@ -1,6 +1,13 @@
 import { expect, test } from "bun:test";
 import { createRecipe } from "../index";
 
+test("non-object input is rejected, not thrown", () => {
+  const result = createRecipe("not a recipe");
+
+  expect(result.ok).toBe(false);
+  expect(result.ok || result.errors.length > 0).toBe(true);
+});
+
 test("empty title is rejected", () => {
   const result = createRecipe({
     title: "",

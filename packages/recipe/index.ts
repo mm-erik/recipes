@@ -3,6 +3,6 @@ import type { CreateRecipeResult } from "./lib/types";
 
 export type { CreateRecipeResult, Ingredient, Recipe, RecipeValidationError } from "./lib/types";
 
-export function createRecipe(input: Record<string, unknown>): CreateRecipeResult {
+export function createRecipe(input: unknown): CreateRecipeResult {
   return buildRecipe(input);
 }
