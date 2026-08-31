@@ -1,5 +1,9 @@
 # CLAUDE.md
 
+## Pausiert
+
+Work is paused mid-ticket on issue #11 (Clerk auth) on branch `feature/server-clerk-auth`. Before doing anything else, read `/tmp/recipes-handoff.md` for full resume instructions. **Delete this "Pausiert" section once you've read it** — it's a one-time breadcrumb pointing at a temp file, not a standing project convention.
+
 ## Projektüberblick
 
 Recipes: a fullstack app for managing private cooking recipes. Multi-user; each user owns a private recipe collection, no sharing in v1.
