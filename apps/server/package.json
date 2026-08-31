@@ -1,0 +1,9 @@
+{
+  "name": "@recipes/server",
+  "private": true,
+  "dependencies": {
+    "@recipes/recipe": "workspace:*",
+    "@trpc/server": "^11.18.0",
+    "elysia": "^1.4.30"
+  }
+}
