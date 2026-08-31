@@ -1,18 +1,8 @@
-export type Ingredient = {
-  name: string;
-  amount?: number;
-  unit?: string;
-};
+import type { z } from "zod";
+import type { recipeInputSchema } from "./schema";
 
-export type Recipe = {
-  title: string;
-  ingredients: Ingredient[];
-  steps: string[];
-  servings: number;
-  prepTimeMinutes?: number;
-  cookTimeMinutes?: number;
-  tags: string[];
-};
+export type { Ingredient } from "./schema";
+export type Recipe = z.infer<typeof recipeInputSchema>;
 
 export type RecipeValidationError = {
   field: string;

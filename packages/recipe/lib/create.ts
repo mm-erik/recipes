@@ -1,21 +1,19 @@
-import type { CreateRecipeResult, Ingredient, Recipe } from "./types";
-import { validateRecipeInput } from "./validate";
+import { formatIssuePath } from "./format-issue-path";
+import { recipeInputSchema } from "./schema";
+import type { CreateRecipeResult } from "./types";
 
-export function buildRecipe(input: Record<string, unknown>): CreateRecipeResult {
-  const errors = validateRecipeInput(input);
-  if (errors.length > 0) {
-    return { ok: false, errors };
+export function buildRecipe(input: unknown): CreateRecipeResult {
+  const result = recipeInputSchema.safeParse(input);
+
+  if (!result.success) {
+    return {
+      ok: false,
+      errors: result.error.issues.map((issue) => ({
+        field: formatIssuePath(issue.path),
+        message: issue.message,
+      })),
+    };
   }
 
-  const recipe: Recipe = {
-    title: input.title as string,
-    ingredients: input.ingredients as Ingredient[],
-    steps: input.steps as string[],
-    servings: input.servings as number,
-    prepTimeMinutes: input.prepTimeMinutes as number | undefined,
-    cookTimeMinutes: input.cookTimeMinutes as number | undefined,
-    tags: (input.tags as string[]) ?? [],
-  };
-
-  return { ok: true, recipe };
+  return { ok: true, recipe: result.data };
 }
