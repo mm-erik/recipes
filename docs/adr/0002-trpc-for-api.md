@@ -1,0 +1,3 @@
+# Use tRPC for backend-frontend communication
+
+We considered a plain REST HTTP API for communication between the Bun/TS backend and the React/TS frontend, documented informally with no shared types between the two. We chose tRPC instead: since both sides are TypeScript, tRPC gives end-to-end type safety — frontend calls are typed directly from the backend's router definitions, with no separate schema or codegen step. The trade-off is tighter coupling between backend and frontend (the API is no longer a generic, language-agnostic REST contract a third-party client could consume without the TS types).

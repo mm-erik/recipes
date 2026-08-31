@@ -1,0 +1,3 @@
+# Normalize ingredients into a shared entity
+
+We considered storing each Recipe's ingredient list as free-text lines (name, quantity, unit) with no relation between recipes. Instead, we introduced a global `Ingredient` entity (the foodstuff, e.g. "Flour") referenced by per-recipe `RecipeIngredient` lines (quantity + unit + Ingredient reference). This costs schema complexity now but keeps ingredient identity consistent across recipes and enables reliable cross-recipe queries (e.g. "recipes using flour", aggregated shopping lists) without text matching against inconsistently-typed strings later.
