@@ -1,0 +1,21 @@
+{
+  "name": "backend",
+  "module": "src/server.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run --hot src/server.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "dependencies": {
+    "@trpc/server": "^11.18.0",
+    "postgres": "^3.4.9",
+    "zod": "^4.5.4"
+  }
+}
