@@ -8,6 +8,13 @@
       "when": 1788172709916,
       "tag": "0000_dazzling_starbolt",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1788174608576,
+      "tag": "0001_legal_santa_claus",
+      "breakpoints": true
     }
   ]
 }

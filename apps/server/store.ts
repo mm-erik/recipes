@@ -1,4 +1,5 @@
 import type { Recipe } from "@recipes/recipe";
+import { eq } from "drizzle-orm";
 import type { Db } from "./db/client";
 import { recipesTable } from "./db/schema";
 
@@ -6,12 +7,15 @@ export type StoredRecipe = { id: string; recipe: Recipe };
 
 export function createRecipeStore(db: Db) {
   return {
-    async save(recipe: Recipe): Promise<StoredRecipe> {
-      const [row] = await db.insert(recipesTable).values(recipe).returning();
+    async save(userId: string, recipe: Recipe): Promise<StoredRecipe> {
+      const [row] = await db
+        .insert(recipesTable)
+        .values({ ...recipe, userId })
+        .returning();
       return toStoredRecipe(row);
     },
-    async list(): Promise<StoredRecipe[]> {
-      const rows = await db.select().from(recipesTable);
+    async list(userId: string): Promise<StoredRecipe[]> {
+      const rows = await db.select().from(recipesTable).where(eq(recipesTable.userId, userId));
       return rows.map(toStoredRecipe);
     },
   };
