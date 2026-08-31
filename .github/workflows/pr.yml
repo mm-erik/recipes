@@ -1,0 +1,57 @@
+name: PR
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+
+      # dependency-cruiser (lint:boundaries) needs Node >=22 on PATH; TypeScript is pinned to ^6.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: bun install --frozen-lockfile
+
+      - run: bun test
+
+      - run: node_modules/.bin/tsc --noEmit
+
+      - run: bun run lint:boundaries
+
+  claude-review:
+    needs: ci
+    if: success()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: anthropics/claude-code-action@main
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            CI has already passed for pull request #${{ github.event.pull_request.number }}
+            in ${{ github.repository }}. Run the /code-review skill against this PR (compare
+            against its merge-base with the target branch), following CLAUDE.md conventions.
+
+            Post the review as a PR comment via `gh pr comment`.
+
+            - If the review has no blocking findings: approve with `gh pr review --approve`,
+              then merge with `gh pr merge --auto --squash --delete-branch`.
+            - If the review has blocking findings: do not approve or merge. Leave the PR open
+              with your comment explaining what's blocking.
+          claude_args: |
+            --allowedTools "Bash(gh pr diff:*),Bash(gh pr comment:*),Bash(gh pr view:*),Bash(gh pr review:*),Bash(gh pr merge:*)"
