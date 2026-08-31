@@ -1,9 +1,10 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { Elysia } from "elysia";
+import { createDbFromEnv } from "./db/client";
 import { createAppRouter } from "./router";
 import { createRecipeStore } from "./store";
 
-const appRouter = createAppRouter(createRecipeStore());
+const appRouter = createAppRouter(createRecipeStore(createDbFromEnv()));
 
 export const app = new Elysia().all("/trpc/*", ({ request }) =>
   fetchRequestHandler({

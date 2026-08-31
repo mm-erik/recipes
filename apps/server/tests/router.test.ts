@@ -1,6 +1,9 @@
-import { expect, test } from "bun:test";
+import { beforeEach, expect, test } from "bun:test";
 import { createAppRouter, RecipeInputError } from "../router";
 import { createRecipeStore } from "../store";
+import { resetTestDb, testDb } from "./db-fixture";
+
+beforeEach(resetTestDb);
 
 const validRecipeInput = {
   title: "Pancakes",
@@ -11,7 +14,7 @@ const validRecipeInput = {
 };
 
 function makeCaller() {
-  return createAppRouter(createRecipeStore()).createCaller({});
+  return createAppRouter(createRecipeStore(testDb)).createCaller({});
 }
 
 test("recipe.create stores a valid recipe and returns it with an id", async () => {
